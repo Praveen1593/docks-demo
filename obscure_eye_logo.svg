@@ -1,0 +1,14 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield/Eye Outline -->
+  <ellipse cx="100" cy="100" rx="80" ry="50" fill="#1a237e" stroke="#00b0ff" stroke-width="6"/>
+  <!-- Digital Aura -->
+  <ellipse cx="100" cy="100" rx="90" ry="60" fill="none" stroke="#00ff90" stroke-width="3" stroke-dasharray="8 8" opacity="0.7"/>
+  <!-- Camera Lens Iris -->
+  <circle cx="100" cy="100" r="28" fill="#121212" stroke="#00b0ff" stroke-width="4"/>
+  <circle cx="100" cy="100" r="14" fill="#00b0ff" opacity="0.7"/>
+  <circle cx="110" cy="92" r="5" fill="#00ff90" opacity="0.8"/>
+  <!-- Lens Reflection -->
+  <ellipse cx="108" cy="92" rx="3" ry="1.5" fill="#ffffff" opacity="0.7"/>
+  <!-- Lower lid (shield hint) -->
+  <path d="M40 120 Q100 170 160 120" stroke="#00b0ff" stroke-width="5" fill="none" opacity="0.5"/>
+</svg>
