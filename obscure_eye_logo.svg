@@ -1,24 +1,28 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Stylized Eye Outline -->
-  <path d="M30 100 Q100 30 170 100 Q100 170 30 100 Z" fill="#181c2f" stroke="#00b0ff" stroke-width="6"/>
-  <!-- Glowing Gradient Iris -->
+<svg width="220" height="200" viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dynamic Eye Outline with Swoosh -->
+  <path d="M30 110 Q110 30 190 110 Q110 190 30 110 Q60 80 110 110 Q160 140 190 110" fill="#101526" stroke="#00b0ff" stroke-width="6"/>
+  <!-- Glowing Circuit-Inspired Iris -->
   <defs>
-    <radialGradient id="irisGradient" cx="50%" cy="50%" r="50%">
+    <radialGradient id="irisGradient2" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#00ff90"/>
       <stop offset="60%" stop-color="#00b0ff"/>
-      <stop offset="100%" stop-color="#181c2f"/>
+      <stop offset="100%" stop-color="#101526"/>
     </radialGradient>
   </defs>
-  <circle cx="100" cy="100" r="32" fill="url(#irisGradient)" stroke="#00ff90" stroke-width="3"/>
-  <!-- Central AI/Power Symbol -->
-  <circle cx="100" cy="100" r="12" fill="#fff" stroke="#00b0ff" stroke-width="2"/>
-  <rect x="97" y="90" width="6" height="20" rx="3" fill="#00b0ff"/>
-  <rect x="90" y="97" width="20" height="6" rx="3" fill="#00b0ff"/>
-  <!-- Pupil Highlight -->
-  <ellipse cx="108" cy="94" rx="4" ry="2" fill="#fff" opacity="0.7"/>
-  <!-- Digital Pixel Accents -->
-  <rect x="155" y="95" width="6" height="6" fill="#00ff90"/>
-  <rect x="160" y="105" width="4" height="4" fill="#00b0ff"/>
-  <rect x="40" y="110" width="5" height="5" fill="#00ff90"/>
-  <rect x="45" y="90" width="3" height="3" fill="#00b0ff"/>
+  <circle cx="110" cy="110" r="32" fill="url(#irisGradient2)" stroke="#00ff90" stroke-width="3"/>
+  <!-- Circuit pattern (arcs) -->
+  <path d="M110 78 A32 32 0 0 1 142 110" stroke="#00b0ff" stroke-width="2" fill="none" opacity="0.5"/>
+  <path d="M110 142 A32 32 0 0 1 78 110" stroke="#00ff90" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Central Pulse (stylized O) -->
+  <circle cx="110" cy="110" r="10" fill="#fff" stroke="#00b0ff" stroke-width="2"/>
+  <circle cx="110" cy="110" r="4" fill="#00ff90"/>
+  <!-- Radiating lines -->
+  <line x1="110" y1="95" x2="110" y2="85" stroke="#00b0ff" stroke-width="2"/>
+  <line x1="110" y1="125" x2="110" y2="135" stroke="#00b0ff" stroke-width="2"/>
+  <line x1="125" y1="110" x2="135" y2="110" stroke="#00b0ff" stroke-width="2"/>
+  <line x1="95" y1="110" x2="85" y2="110" stroke="#00b0ff" stroke-width="2"/>
+  <!-- Rising Star Accent -->
+  <polygon points="110,60 113,68 121,68 114,73 117,81 110,76 103,81 106,73 99,68 107,68" fill="#FFD700"/>
+  <!-- Swoosh/Comet Tail -->
+  <path d="M40 120 Q80 160 160 120" stroke="#00ff90" stroke-width="5" fill="none" opacity="0.7"/>
 </svg>
