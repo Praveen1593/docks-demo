@@ -15,6 +15,8 @@ from config import Config
 from emotion_detector import EmotionDetector
 from object_detector import ObjectDetector
 from sms_notifier import SMSNotifier
+from theft_detector import TheftDetector
+from instant_alert_system import InstantAlertSystem
 
 class AIMonitor:
     """Main AI monitoring system"""
@@ -33,7 +35,12 @@ class AIMonitor:
         # Initialize detectors
         self.emotion_detector = EmotionDetector()
         self.object_detector = ObjectDetector()
+        self.theft_detector = TheftDetector()
         self.sms_notifier = SMSNotifier()
+        self.instant_alert = InstantAlertSystem()
+        
+        # Setup theft detection zones if needed
+        self._setup_theft_zones()
         
         # Statistics
         self.frame_count = 0
@@ -41,6 +48,22 @@ class AIMonitor:
         self.last_status_update = time.time()
         
         print("✅ AI Monitor System initialized successfully")
+    
+    def _setup_theft_zones(self):
+        """Setup theft detection zones based on camera view"""
+        # You can customize these zones based on your camera setup
+        # Example zones (adjust coordinates based on your camera resolution)
+        
+        # Add restricted zones (areas where people shouldn't be)
+        # self.theft_detector.add_restricted_zone("Storage Area", (100, 100, 300, 200))
+        # self.theft_detector.add_restricted_zone("Private Office", (400, 150, 600, 300))
+        
+        # Add valuable item zones (areas with valuable items)
+        # self.theft_detector.add_valuable_item_zone("Desk Area", (200, 200, 500, 400))
+        # self.theft_detector.add_valuable_item_zone("Electronics Shelf", (50, 300, 250, 450))
+        
+        # Uncomment and adjust coordinates based on your specific needs
+        print("💡 Tip: Configure theft detection zones in _setup_theft_zones() method")
     
     def initialize_camera(self) -> bool:
         """Initialize camera connection"""
@@ -78,7 +101,7 @@ class AIMonitor:
             frame: Input frame from camera
             
         Returns:
-            Tuple of (emotions, objects, alert_triggered)
+            Tuple of (emotions, objects, theft_results, alert_triggered)
         """
         alert_triggered = False
         
@@ -92,28 +115,42 @@ class AIMonitor:
             frame, Config.OBJECT_CONFIDENCE_THRESHOLD
         )
         
-        # Check for alert conditions
-        alert_emotions = self.emotion_detector.get_alert_emotions(emotions, Config.ALERT_EMOTIONS)
-        alert_objects = self.object_detector.get_alert_objects(objects, Config.ALERT_OBJECTS)
+        # Advanced theft detection
+        theft_results = self.theft_detector.detect_theft_scenario(frame, self.frame_count)
         
-        # Send alerts if necessary
-        if alert_emotions:
-            print(f"🚨 EMOTION ALERT: {[e['emotion'] for e in alert_emotions]}")
+        # Check for theft alerts (highest priority)
+        if theft_results['theft_detected']:
+            print(f"🚨 THEFT DETECTED: {theft_results['theft_type']} ({theft_results['confidence']:.2f})")
+            
+            # Trigger instant alert system
+            if self.instant_alert.trigger_theft_alert(theft_results, frame):
+                alert_triggered = True
+                print(f"📱 Instant theft alert sent - Level: {theft_results['alert_level']}")
+        
+        # Check for emotion alerts (medium priority)
+        alert_emotions = self.emotion_detector.get_alert_emotions(emotions, Config.ALERT_EMOTIONS)
+        if alert_emotions and not alert_triggered:  # Don't duplicate if theft already triggered
+            print(f"😡 EMOTION ALERT: {[e['emotion'] for e in alert_emotions]}")
             image_path = self.sms_notifier.save_alert_image(frame, alert_emotions, [])
             self.sms_notifier.send_alert('emotion', alert_emotions, image_path)
             alert_triggered = True
             
-        if alert_objects:
-            print(f"🚨 OBJECT ALERT: {[o['class_name'] for o in alert_objects]}")
+        # Check for object alerts (low priority)
+        alert_objects = self.object_detector.get_alert_objects(objects, Config.ALERT_OBJECTS)
+        if alert_objects and not alert_triggered:  # Don't duplicate if other alerts already triggered
+            print(f"📦 OBJECT ALERT: {[o['class_name'] for o in alert_objects]}")
             image_path = self.sms_notifier.save_alert_image(frame, [], alert_objects)
             self.sms_notifier.send_alert('object', alert_objects, image_path)
             alert_triggered = True
         
-        return emotions, objects, alert_triggered
+        return emotions, objects, theft_results, alert_triggered
     
-    def create_display_frame(self, frame: np.ndarray, emotions: list, objects: list) -> np.ndarray:
+    def create_display_frame(self, frame: np.ndarray, emotions: list, objects: list, theft_results: dict) -> np.ndarray:
         """Create annotated frame for display"""
         display_frame = frame.copy()
+        
+        # Add theft detection annotations (highest priority - drawn first)
+        display_frame = self.theft_detector.draw_theft_annotations(display_frame, theft_results)
         
         # Add emotion annotations
         display_frame = self.emotion_detector.draw_emotion_annotations(display_frame, emotions)
@@ -122,28 +159,48 @@ class AIMonitor:
         display_frame = self.object_detector.draw_object_annotations(display_frame, objects)
         
         # Add system info
-        self._add_system_info(display_frame)
+        self._add_system_info(display_frame, theft_results)
         
         return display_frame
     
-    def _add_system_info(self, frame: np.ndarray):
+    def _add_system_info(self, frame: np.ndarray, theft_results: dict = None):
         """Add system information overlay to frame"""
+        # Start from bottom right for system info
+        h, w = frame.shape[:2]
+        y_offset = h - 20
+        
         # Current time
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        cv2.putText(frame, f"Time: {current_time}", (10, 30), 
-                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+        cv2.putText(frame, f"Time: {current_time}", (w - 350, y_offset), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+        y_offset -= 25
         
         # Frame count and FPS
         elapsed_time = time.time() - self.start_time
         fps = self.frame_count / elapsed_time if elapsed_time > 0 else 0
-        cv2.putText(frame, f"Frames: {self.frame_count} | FPS: {fps:.1f}", (10, 60), 
-                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+        cv2.putText(frame, f"Frames: {self.frame_count} | FPS: {fps:.1f}", (w - 350, y_offset), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+        y_offset -= 25
         
         # System status
         status = "MONITORING ACTIVE" if self.running else "STOPPED"
         color = (0, 255, 0) if self.running else (0, 0, 255)
-        cv2.putText(frame, f"Status: {status}", (10, 90), 
-                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
+        cv2.putText(frame, f"Status: {status}", (w - 350, y_offset), 
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+        y_offset -= 25
+        
+        # Theft detection info
+        if theft_results:
+            motion_level = theft_results.get('motion_level', 0)
+            cv2.putText(frame, f"Motion: {motion_level:.3f}", (w - 350, y_offset), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+            y_offset -= 25
+            
+            # Suspicious person count
+            suspicious_count = len(theft_results.get('suspicious_persons', []))
+            if suspicious_count > 0:
+                cv2.putText(frame, f"Suspects: {suspicious_count}", (w - 350, y_offset), 
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
     
     def send_periodic_status(self):
         """Send periodic status updates"""
@@ -194,11 +251,11 @@ class AIMonitor:
                 self.frame_count += 1
                 
                 # Process frame
-                emotions, objects, alert_triggered = self.process_frame(frame)
+                emotions, objects, theft_results, alert_triggered = self.process_frame(frame)
                 
                 # Create display frame if needed
                 if show_display:
-                    display_frame = self.create_display_frame(frame, emotions, objects)
+                    display_frame = self.create_display_frame(frame, emotions, objects, theft_results)
                     
                     # Show frame
                     cv2.imshow('AI Security Monitor', display_frame)
@@ -216,9 +273,13 @@ class AIMonitor:
                 if self.frame_count % 30 == 0:  # Every 30 frames
                     emotion_count = len(emotions)
                     object_count = len(objects)
-                    if emotion_count > 0 or object_count > 0:
+                    suspicious_count = len(theft_results.get('suspicious_persons', []))
+                    theft_confidence = theft_results.get('confidence', 0)
+                    
+                    if emotion_count > 0 or object_count > 0 or suspicious_count > 0:
                         print(f"📊 Frame {self.frame_count}: "
-                              f"{emotion_count} emotions, {object_count} objects detected")
+                              f"{emotion_count} emotions, {object_count} objects, "
+                              f"{suspicious_count} suspects, theft:{theft_confidence:.2f}")
                 
                 # Small delay to prevent overwhelming the system
                 time.sleep(0.01)
