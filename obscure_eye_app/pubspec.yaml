@@ -1,5 +1,6 @@
 name: obscure_eye_app
-description: A Flutter app for Obscure Eye AI dashboard
+
+description: A Flutter app for Obscure Eye AI dashboard with GetX and cyberpunk branding
 publish_to: 'none'
 version: 0.1.0
 
@@ -9,8 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  get: ^4.6.5
   http: ^1.2.0
   video_player: ^2.7.0
+  flutter_svg: ^2.0.7
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +22,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/obscure_eye_logo.svg
