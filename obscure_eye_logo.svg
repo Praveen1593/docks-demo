@@ -1,14 +1,24 @@
 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Shield/Eye Outline -->
-  <ellipse cx="100" cy="100" rx="80" ry="50" fill="#1a237e" stroke="#00b0ff" stroke-width="6"/>
-  <!-- Digital Aura -->
-  <ellipse cx="100" cy="100" rx="90" ry="60" fill="none" stroke="#00ff90" stroke-width="3" stroke-dasharray="8 8" opacity="0.7"/>
-  <!-- Camera Lens Iris -->
-  <circle cx="100" cy="100" r="28" fill="#121212" stroke="#00b0ff" stroke-width="4"/>
-  <circle cx="100" cy="100" r="14" fill="#00b0ff" opacity="0.7"/>
-  <circle cx="110" cy="92" r="5" fill="#00ff90" opacity="0.8"/>
-  <!-- Lens Reflection -->
-  <ellipse cx="108" cy="92" rx="3" ry="1.5" fill="#ffffff" opacity="0.7"/>
-  <!-- Lower lid (shield hint) -->
-  <path d="M40 120 Q100 170 160 120" stroke="#00b0ff" stroke-width="5" fill="none" opacity="0.5"/>
+  <!-- Stylized Eye Outline -->
+  <path d="M30 100 Q100 30 170 100 Q100 170 30 100 Z" fill="#181c2f" stroke="#00b0ff" stroke-width="6"/>
+  <!-- Glowing Gradient Iris -->
+  <defs>
+    <radialGradient id="irisGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00ff90"/>
+      <stop offset="60%" stop-color="#00b0ff"/>
+      <stop offset="100%" stop-color="#181c2f"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="32" fill="url(#irisGradient)" stroke="#00ff90" stroke-width="3"/>
+  <!-- Central AI/Power Symbol -->
+  <circle cx="100" cy="100" r="12" fill="#fff" stroke="#00b0ff" stroke-width="2"/>
+  <rect x="97" y="90" width="6" height="20" rx="3" fill="#00b0ff"/>
+  <rect x="90" y="97" width="20" height="6" rx="3" fill="#00b0ff"/>
+  <!-- Pupil Highlight -->
+  <ellipse cx="108" cy="94" rx="4" ry="2" fill="#fff" opacity="0.7"/>
+  <!-- Digital Pixel Accents -->
+  <rect x="155" y="95" width="6" height="6" fill="#00ff90"/>
+  <rect x="160" y="105" width="4" height="4" fill="#00b0ff"/>
+  <rect x="40" y="110" width="5" height="5" fill="#00ff90"/>
+  <rect x="45" y="90" width="3" height="3" fill="#00b0ff"/>
 </svg>
