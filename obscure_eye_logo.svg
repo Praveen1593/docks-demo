@@ -1,28 +1,38 @@
-<svg width="220" height="200" viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Dynamic Eye Outline with Swoosh -->
-  <path d="M30 110 Q110 30 190 110 Q110 190 30 110 Q60 80 110 110 Q160 140 190 110" fill="#101526" stroke="#00b0ff" stroke-width="6"/>
-  <!-- Glowing Circuit-Inspired Iris -->
+<svg width="240" height="200" viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Background for Eye -->
   <defs>
-    <radialGradient id="irisGradient2" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#00ff90"/>
-      <stop offset="60%" stop-color="#00b0ff"/>
-      <stop offset="100%" stop-color="#101526"/>
+    <radialGradient id="eyeBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2d006b"/>
+      <stop offset="100%" stop-color="#0a1931"/>
     </radialGradient>
+    <radialGradient id="irisGradient3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff2fd6"/>
+      <stop offset="60%" stop-color="#00fff7"/>
+      <stop offset="100%" stop-color="#2d006b"/>
+    </radialGradient>
+    <linearGradient id="swooshGradient" x1="40" y1="120" x2="200" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff2fd6"/>
+      <stop offset="1" stop-color="#00fff7"/>
+    </linearGradient>
   </defs>
-  <circle cx="110" cy="110" r="32" fill="url(#irisGradient2)" stroke="#00ff90" stroke-width="3"/>
-  <!-- Circuit pattern (arcs) -->
-  <path d="M110 78 A32 32 0 0 1 142 110" stroke="#00b0ff" stroke-width="2" fill="none" opacity="0.5"/>
-  <path d="M110 142 A32 32 0 0 1 78 110" stroke="#00ff90" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Dynamic Eye Outline with Swoosh -->
+  <path d="M40 110 Q120 20 200 110 Q120 190 40 110 Q70 80 120 110 Q170 140 200 110" fill="url(#eyeBg)" stroke="#00fff7" stroke-width="6"/>
+  <!-- Multi-ringed Iris -->
+  <circle cx="120" cy="110" r="36" fill="url(#irisGradient3)" stroke="#ff2fd6" stroke-width="3"/>
+  <circle cx="120" cy="110" r="28" fill="none" stroke="#00fff7" stroke-width="2" opacity="0.7"/>
+  <circle cx="120" cy="110" r="20" fill="none" stroke="#ff2fd6" stroke-width="2" opacity="0.5"/>
+  <!-- Scan Line -->
+  <rect x="100" y="105" width="40" height="4" rx="2" fill="#ffe600" opacity="0.5"/>
   <!-- Central Pulse (stylized O) -->
-  <circle cx="110" cy="110" r="10" fill="#fff" stroke="#00b0ff" stroke-width="2"/>
-  <circle cx="110" cy="110" r="4" fill="#00ff90"/>
+  <circle cx="120" cy="110" r="10" fill="#fff" stroke="#ff2fd6" stroke-width="2"/>
+  <circle cx="120" cy="110" r="4" fill="#00fff7"/>
   <!-- Radiating lines -->
-  <line x1="110" y1="95" x2="110" y2="85" stroke="#00b0ff" stroke-width="2"/>
-  <line x1="110" y1="125" x2="110" y2="135" stroke="#00b0ff" stroke-width="2"/>
-  <line x1="125" y1="110" x2="135" y2="110" stroke="#00b0ff" stroke-width="2"/>
-  <line x1="95" y1="110" x2="85" y2="110" stroke="#00b0ff" stroke-width="2"/>
-  <!-- Rising Star Accent -->
-  <polygon points="110,60 113,68 121,68 114,73 117,81 110,76 103,81 106,73 99,68 107,68" fill="#FFD700"/>
-  <!-- Swoosh/Comet Tail -->
-  <path d="M40 120 Q80 160 160 120" stroke="#00ff90" stroke-width="5" fill="none" opacity="0.7"/>
+  <line x1="120" y1="95" x2="120" y2="85" stroke="#ff2fd6" stroke-width="2"/>
+  <line x1="120" y1="125" x2="120" y2="135" stroke="#00fff7" stroke-width="2"/>
+  <line x1="135" y1="110" x2="145" y2="110" stroke="#ff2fd6" stroke-width="2"/>
+  <line x1="105" y1="110" x2="95" y2="110" stroke="#00fff7" stroke-width="2"/>
+  <!-- Rising Star Accent (larger, radiant) -->
+  <polygon points="120,60 125,72 138,72 127,80 132,92 120,84 108,92 113,80 102,72 115,72" fill="#ffe600" stroke="#fff" stroke-width="2"/>
+  <!-- Swoosh/Comet Tail with Gradient -->
+  <path d="M50 130 Q120 180 190 130" stroke="url(#swooshGradient)" stroke-width="7" fill="none" opacity="0.8"/>
 </svg>
