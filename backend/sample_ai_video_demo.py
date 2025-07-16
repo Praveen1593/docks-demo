@@ -2,10 +2,27 @@ import cv2
 from object_detector import ObjectDetector
 from emotion_detector import EmotionDetector
 import os
+from pyfcm import FCMNotification
 
 # Path to your test video file
 VIDEO_PATH = "sample_video.mp4"  # Replace with your video file
 ALERT_OUTPUT_DIR = "alerts_output"
+
+# Firebase Cloud Messaging setup
+FCM_SERVER_KEY = "YOUR_FCM_SERVER_KEY"  # <-- Replace with your FCM server key
+DEVICE_TOKEN = "YOUR_DEVICE_FCM_TOKEN"  # <-- Replace with your device's FCM token
+push_service = FCMNotification(api_key=FCM_SERVER_KEY)
+
+def send_firebase_alert(title, message):
+    try:
+        result = push_service.notify_single_device(
+            registration_id=DEVICE_TOKEN,
+            message_title=title,
+            message_body=message
+        )
+        print("Firebase notification sent:", result)
+    except Exception as e:
+        print(f"Error sending Firebase notification: {e}")
 
 # Create output directory for alert frames
 os.makedirs(ALERT_OUTPUT_DIR, exist_ok=True)
@@ -38,7 +55,7 @@ def main():
         # Show the frame
         cv2.imshow("Obscure Eye AI Demo", annotated)
 
-        # Alert logic: if person or angry detected, save frame and print alert
+        # Alert logic: if person or angry detected, save frame, print alert, and send FCM notification
         if person_detected or angry_detected:
             alert_count += 1
             alert_type = []
@@ -46,9 +63,15 @@ def main():
                 alert_type.append("Person")
             if angry_detected:
                 alert_type.append("Angry Emotion")
-            print(f"[ALERT] Frame {frame_count}: {', '.join(alert_type)} detected!")
+            alert_msg = f"[ALERT] Frame {frame_count}: {', '.join(alert_type)} detected!"
+            print(alert_msg)
             out_path = os.path.join(ALERT_OUTPUT_DIR, f"alert_{frame_count}.jpg")
             cv2.imwrite(out_path, annotated)
+            # Send Firebase notification
+            send_firebase_alert(
+                "Obscure Eye Alert",
+                f"{', '.join(alert_type)} detected in frame {frame_count}."
+            )
 
         # Press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):
