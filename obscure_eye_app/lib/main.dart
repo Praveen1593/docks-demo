@@ -4,8 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app/routes/app_pages.dart';
 import 'app/theme/cyberpunk_theme.dart';
 import 'app/views/splash_screen.dart';
+import 'app/services/notification_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
   runApp(ObscureEyeApp());
 }
 
