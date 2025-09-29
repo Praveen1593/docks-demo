@@ -1,6 +1,6 @@
-# VideoCall App - Flutter Video Calling Application
+# VideoCall App - Flutter Video Calling Application (GetX Version)
 
-A comprehensive Flutter application that demonstrates video calling capabilities using Amazon Chime SDK, REST API integration, and modern app architecture patterns.
+A comprehensive Flutter application that demonstrates video calling capabilities using Amazon Chime SDK, REST API integration, and GetX state management with modern app architecture patterns.
 
 ## 🚀 Features
 
@@ -12,7 +12,7 @@ A comprehensive Flutter application that demonstrates video calling capabilities
 - **Real-time Controls**: Mute/unmute audio, enable/disable video
 
 ### Technical Features
-- **State Management**: Clean architecture with Riverpod
+- **State Management**: Clean architecture with GetX
 - **Offline Support**: Cached data for offline functionality
 - **Responsive UI**: Adaptive design for different screen sizes
 - **Permissions Handling**: Graceful camera and microphone permissions
@@ -45,11 +45,11 @@ A comprehensive Flutter application that demonstrates video calling capabilities
 ## 🛠️ Tech Stack
 
 - **Framework**: Flutter 3.16.0+
-- **State Management**: Riverpod 2.4.9
+- **State Management**: GetX 4.6.6
 - **Video SDK**: Amazon Chime SDK 0.19.0
 - **HTTP Client**: Dio 5.4.0 with Retrofit
 - **Local Storage**: Hive 2.2.3
-- **Navigation**: GoRouter 12.1.3
+- **Navigation**: GetX Navigation
 - **UI**: Material Design 3
 - **Permissions**: Permission Handler 11.2.0
 
@@ -146,8 +146,8 @@ lib/
 
 ### State Management Pattern
 
-- **Providers**: Service and repository providers
-- **Notifiers**: State management with StateNotifier
+- **Controllers**: GetX controllers for state management
+- **Observables**: Reactive variables with Rx types
 - **Models**: Data models with JSON serialization
 - **Services**: API and external service integrations
 
